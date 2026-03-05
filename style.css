@@ -1,0 +1,299 @@
+/* --- 1. 基础重置与消除点击蓝框 --- */
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        font-family: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+:root {
+        --bg: #f8fafc;
+        --surface: rgba(255, 255, 255, 0.9);
+        --primary: #2563eb;
+        --text-main: #0f172a;
+        --text-sub: #64748b;
+        --border: #e2e8f0;
+        --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+        --bg: #020617;
+        --surface: rgba(30, 41, 59, 0.9);
+        --primary: #38bdf8;
+        --text-main: #f1f5f9;
+        --text-sub: #94a3b8;
+        --border: #334155;
+}
+
+body {
+        background: var(--bg);
+        color: var(--text-main);
+        transition: 0.3s;
+        min-height: 100vh;
+}
+
+/* --- 2. 完美对齐的 Header --- */
+header {
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: center;
+}
+
+.header-content {
+        width: 90%;
+        max-width: 500px;
+        height: 64px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* 确保垂直居中 */
+}
+
+.logo {
+        font-size: 1.2rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, var(--primary), #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-transform: uppercase;
+}
+
+.controls {
+        display: flex;
+        align-items: center;
+        /* 确保内部按钮和开关居中 */
+        gap: 10px;
+}
+
+/* --- 3. 核心布局容器 --- */
+.container {
+        width: 90%;
+        max-width: 500px;
+        margin: 1.5rem auto;
+        padding-bottom: 120px;
+}
+
+.search-input {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text-main);
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow);
+        font-size: 1rem;
+}
+
+/* --- 4. 章节列表 --- */
+.chapter-list {
+        background: var(--surface);
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+}
+
+.chapter-item {
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        transition: 0.2s;
+}
+
+.chapter-item:last-child {
+        border-bottom: none;
+}
+
+.chapter-item.selected {
+        background: rgba(37, 99, 235, 0.08);
+}
+
+.checkbox {
+        width: 22px;
+        height: 22px;
+        border: 2px solid var(--border);
+        border-radius: 6px;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+.selected .checkbox {
+        background: var(--primary);
+        border-color: var(--primary);
+}
+
+.selected .checkbox::after {
+        content: '✓';
+        color: white;
+        font-size: 12px;
+}
+
+.chapter-info .name {
+        font-weight: 600;
+        display: block;
+}
+
+.chapter-info .count {
+        font-size: 0.75rem;
+        color: var(--text-sub);
+}
+
+/* --- 5. 训练卡片 --- */
+/* 优化卡片容器：增加内缩进和溢出处理 */
+.card {
+    background: var(--surface);
+    padding: 30px 20px;
+    border-radius: 32px;
+    border: 1px solid var(--border);
+    text-align: center;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+    cursor: pointer;
+    
+    /* 核心布局：确保内部元素不会撑破父容器 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 280px;
+    width: 100%;
+    max-width: 100%; /* 限制最大宽度 */
+    overflow: hidden; /* 超出部分隐藏 */
+}
+
+.word {
+    /* 响应式字号：根据容器宽度自动缩放 */
+    font-size: clamp(1.2rem, 10vw, 2.5rem); 
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 15px;
+    
+    /* 强制折行：对付超长英语单词 */
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 最多显示3行，超出截断 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.mean {
+    font-size: clamp(1rem, 5vw, 1.2rem);
+    color: var(--text-sub);
+    opacity: 0;
+    transition: opacity 0.3s; /* 仅针对透明度做动画 */
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.mean.show {
+        opacity: 1;
+}
+
+/* 结算界面的额外样式 */
+.end-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: var(--text-main);
+}
+
+/* --- 6. 底部工具栏 (整合随机开关) --- */
+.footer-toolbar {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 500px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: var(--surface);
+        padding: 12px 16px;
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+}
+
+.random-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        min-width: 60px;
+        user-select: none;
+}
+
+.btn-main {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 18px;
+        font-weight: 700;
+        flex: 1;
+        cursor: pointer;
+        box-shadow: 0 8px 15px rgba(37, 99, 235, 0.2);
+}
+
+.btn-main:disabled {
+        opacity: 0.3;
+        box-shadow: none;
+        cursor: not-allowed;
+}
+
+.icon-btn {
+        border: none;
+        background: transparent;
+        color: var(--text-main);
+        font-weight: bold;
+        cursor: pointer;
+        padding: 5px 10px;
+}
+
+/* 通用滑块开关 */
+.switch {
+        width: 36px;
+        height: 20px;
+        background: var(--border);
+        border-radius: 20px;
+        position: relative;
+        transition: 0.3s;
+}
+
+.switch::after {
+        content: '';
+        position: absolute;
+        left: 2px;
+        top: 2px;
+        width: 16px;
+        height: 16px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.3s;
+}
+
+.active.switch {
+        background: #10b981;
+}
+
+.active.switch::after {
+        transform: translateX(16px);
+}

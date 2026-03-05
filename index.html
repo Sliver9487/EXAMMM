@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VocabMaster Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">EXAMMM</div>
+            <div class="controls">
+                <button class="icon-btn" onclick="toggleLang()" id="lang-btn">EN</button>
+                <div class="switch" id="theme-switch" onclick="toggleTheme()"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" id="selection-screen">
+        <input type="text" class="search-input" id="search-bar" placeholder="搜索章节..." oninput="renderChapters()">
+
+        <div class="chapter-list" id="chapter-list">
+            <div style="padding: 20px; text-align: center; color: var(--text-sub);">正在读取词库索引...</div>
+        </div>
+
+        <div class="footer-toolbar">
+            <div class="random-btn" onclick="toggleRandom()">
+                <span id="random-text"
+                    style="font-size: 0.65rem; font-weight: 800; color: var(--text-sub); margin-bottom: 4px;">随机</span>
+                <div class="switch" id="random-switch"></div>
+            </div>
+            <button class="btn-main" id="start-btn" onclick="loadAndStart()" disabled>开始练习 (0 词)</button>
+        </div>
+    </div>
+
+    <div class="container" id="training-screen" style="display:none;">
+        <div id="progress" style="text-align: center; margin-bottom: 1rem; font-weight: 800; color: var(--text-sub);">0
+            / 0</div>
+        <div class="card" onclick="document.getElementById('display-mean').classList.toggle('show')">
+            <div class="word" id="display-word">-</div>
+            <div class="mean" id="display-mean">-</div>
+        </div>
+        <div class="footer-toolbar">
+            <button class="icon-btn" onclick="prevWord()">←</button>
+            <button class="btn-main" onclick="nextWord()">下一个 (Next)</button>
+            <button class="icon-btn" onclick="exitSession()">✕</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>
