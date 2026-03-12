@@ -89,49 +89,42 @@ async function loadAndStart() {
         const tasks = Array.from(state.selectedIds).map(async id => {
             const ch = state.chapters.find(c => c.id === id);
             const r = await fetch(ch.path);
-
-            // 核心修改：检查 HTTP 状态，如果 404 或其他错误直接抛出异常
-            if (!r.ok) throw new Error(`无法读取文件: ${ch.title} (${ch.path})`);
-
+            
+            // 严格检查文件是否存在
+            if (!r.ok) throw new Error(`文件不存在: ${ch.title}`);
+            
             const t = await r.text();
             const data = parseCSV(t);
-
-            // 如果 CSV 解析出来是空的，也视为读取失败
-            if (data.length === 0) throw new Error(`${ch.title} 章节内没有单词数据`);
-
+            if (data.length === 0) throw new Error(`${ch.title} 章节内容为空`);
+            
             return data;
         });
 
         const results = await Promise.all(tasks);
         let pool = results.flat();
-
         if (state.isRandom) pool.sort(() => Math.random() - 0.5);
 
         state.wordPool = pool;
         state.index = 0;
 
-        // 只有成功获取到数据才切换屏幕
         document.getElementById('selection-screen').style.display = 'none';
         document.getElementById('training-screen').style.display = 'block';
         updateCard();
 
     } catch (e) {
-        // 修改：不再只是弹窗，而是直接更新按钮文字告知用户
-        const btn = document.getElementById('start-btn');
-        btn.innerText = "无法读取文件";
-        btn.style.background = "#ef4444"; // 变成红色警示
-
-        console.error(e);
-        alert("错误详情: " + e.message);
-
-        // 3秒后恢复按钮颜色
+        // UI 友好报错：按钮变红并提示
+        btn.style.background = "#ef4444";
+        btn.innerText = "读取失败: " + e.message;
         setTimeout(() => {
             btn.style.background = "";
-            renderChapters();
+            btn.innerText = originalText;
+            btn.disabled = false;
         }, 3000);
     } finally {
-        btn.disabled = false;
-        btn.innerText = originalText;
+        if (!document.getElementById('training-screen').style.display === 'block') {
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
     }
 }
 
@@ -146,30 +139,31 @@ function handleAction() {
     const meanEl = document.getElementById('display-mean');
     const inputEl = document.getElementById('user-input');
     const actionBtn = document.getElementById('action-btn');
-    const word = state.wordPool[state.index];
 
-    // 第一步：如果解释还没显示，先显示并校验
+    if (!meanEl || !inputEl) return;
+
+    // 状态 A：如果解释还没显示 -> 执行判定并显示
     if (!meanEl.classList.contains('show')) {
+        const word = state.wordPool[state.index];
         const userAnswer = inputEl.value.trim();
         
-        // 简单匹配逻辑：如果输入正确或是答案的一部分
         if (userAnswer !== "" && (word.m === userAnswer || word.m.includes(userAnswer))) {
-            meanEl.style.color = "#10b981"; // 绿色
+            meanEl.style.color = "#10b981"; // 绿
             meanEl.innerText = "⭐ 正确: " + word.m;
         } else {
-            meanEl.style.color = "#ef4444"; // 红色
+            meanEl.style.color = "#ef4444"; // 红
             meanEl.innerText = "❌ 答案: " + word.m;
         }
 
         meanEl.classList.add('show');
-        inputEl.disabled = true; // 锁定输入
-        actionBtn.innerText = "下一个 (Enter)";
+        inputEl.disabled = true;
+        if (actionBtn) actionBtn.innerText = "下一个 (Enter)";
     } 
-    // 第二步：如果解释已经显示了，再次点击/按键则跳到下一题
+    // 状态 B：如果解释已经显示了 -> 切词
     else {
-        nextWord();
+        moveToNext();
     }
-}
+}   
 
 function updateCard() {
     const word = state.wordPool[state.index];
@@ -178,28 +172,25 @@ function updateCard() {
     const inputEl = document.getElementById('user-input');
     const actionBtn = document.getElementById('action-btn');
 
-    if (!wordEl || !meanEl) return;
-
-    // 1. 立即收回意思，重置样式和输入框
+    // 1. 彻底清除状态
     meanEl.classList.remove('show');
-    meanEl.style.transition = 'none'; 
+    meanEl.style.color = "var(--text-sub)";
     
     if (inputEl) {
         inputEl.value = "";
         inputEl.disabled = false;
-        inputEl.focus();
+        // 关键：切换后强制重新聚焦
+        setTimeout(() => inputEl.focus(), 50);
     }
+    
     if (actionBtn) actionBtn.innerText = "确定 (Enter)";
 
-    // 2. 更新单词和进度
+    // 2. 更新文字
     wordEl.innerText = word.w;
+    
+    // 3. 更新进度
     const progressEl = document.getElementById('progress');
     if (progressEl) progressEl.innerText = `${state.index + 1} / ${state.wordPool.length}`;
-
-    // 3. 绑定回车键逻辑
-    inputEl.onkeydown = (e) => {
-        if (e.key === 'Enter') handleAction();
-    };
 }
 
 function nextWord() {
@@ -214,6 +205,15 @@ function nextWord() {
 function prevWord() {
     if (state.index > 0) {
         state.index--; updateCard();
+    }
+}
+
+function moveToNext() {
+    if (state.index < state.wordPool.length - 1) {
+        state.index++;
+        updateCard();
+    } else {
+        renderEndScreen();
     }
 }
 
@@ -246,3 +246,15 @@ function toggleLang() {
 }
 
 init();
+
+// 监听键盘 Enter 事件
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        // 如果当前正在训练界面（即训练屏幕已显示）
+        const trainingScreen = document.getElementById('training-screen');
+        if (trainingScreen && trainingScreen.style.display === 'block') {
+            e.preventDefault(); // 阻止默认的提交行为
+            handleAction();     // 执行我们的逻辑
+        }
+    }
+});
