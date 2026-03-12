@@ -40,13 +40,21 @@
     <div class="container" id="training-screen" style="display:none;">
         <div id="progress" style="text-align: center; margin-bottom: 1rem; font-weight: 800; color: var(--text-sub);">0
             / 0</div>
-        <div class="card" onclick="document.getElementById('display-mean').classList.toggle('show')">
+
+        <div class="card" onclick="handleAction()">
             <div class="word" id="display-word">-</div>
+
+            <div id="input-area" style="width: 100%; margin-top: 20px;" onclick="event.stopPropagation()">
+                <input type="text" id="user-input" class="search-input" placeholder="输入含义..." autocomplete="off"
+                    style="text-align: center; margin-bottom: 0;">
+            </div>
+
             <div class="mean" id="display-mean">-</div>
         </div>
+
         <div class="footer-toolbar">
             <button class="icon-btn" onclick="prevWord()">←</button>
-            <button class="btn-main" onclick="nextWord()">下一个 (Next)</button>
+            <button class="btn-main" onclick="handleAction()" id="action-btn">确定 (Enter)</button>
             <button class="icon-btn" onclick="exitSession()">✕</button>
         </div>
     </div>

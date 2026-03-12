@@ -192,6 +192,18 @@ header {
     overflow: hidden;
 }
 
+#user-input {
+    max-width: 80%;
+    margin: 10px auto;
+    border: 2px solid var(--border);
+    transition: all 0.2s;
+}
+
+#user-input:focus {
+    border-color: var(--primary);
+    background: var(--bg);
+}
+
 .mean {
     font-size: clamp(1rem, 5vw, 1.2rem);
     color: var(--text-sub);
@@ -199,6 +211,9 @@ header {
     transition: opacity 0.3s; /* 仅针对透明度做动画 */
     width: 100%;
     word-wrap: break-word;
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 1.5rem; /* 防止内容撑开跳动 */
 }
 
 .mean.show {

@@ -142,27 +142,64 @@ function parseCSV(text) {
     });
 }
 
+function handleAction() {
+    const meanEl = document.getElementById('display-mean');
+    const inputEl = document.getElementById('user-input');
+    const actionBtn = document.getElementById('action-btn');
+    const word = state.wordPool[state.index];
+
+    // 第一步：如果解释还没显示，先显示并校验
+    if (!meanEl.classList.contains('show')) {
+        const userAnswer = inputEl.value.trim();
+        
+        // 简单匹配逻辑：如果输入正确或是答案的一部分
+        if (userAnswer !== "" && (word.m === userAnswer || word.m.includes(userAnswer))) {
+            meanEl.style.color = "#10b981"; // 绿色
+            meanEl.innerText = "⭐ 正确: " + word.m;
+        } else {
+            meanEl.style.color = "#ef4444"; // 红色
+            meanEl.innerText = "❌ 答案: " + word.m;
+        }
+
+        meanEl.classList.add('show');
+        inputEl.disabled = true; // 锁定输入
+        actionBtn.innerText = "下一个 (Enter)";
+    } 
+    // 第二步：如果解释已经显示了，再次点击/按键则跳到下一题
+    else {
+        nextWord();
+    }
+}
+
 function updateCard() {
     const word = state.wordPool[state.index];
     const wordEl = document.getElementById('display-word');
     const meanEl = document.getElementById('display-mean');
-    const progressEl = document.getElementById('progress');
+    const inputEl = document.getElementById('user-input');
+    const actionBtn = document.getElementById('action-btn');
 
     if (!wordEl || !meanEl) return;
 
-    // 1. 第一步：立即强制隐藏意思，防止“偷看”
-    meanEl.style.transition = 'none'; // 瞬间关闭过渡动画
+    // 1. 立即收回意思，重置样式和输入框
     meanEl.classList.remove('show');
+    meanEl.style.transition = 'none'; 
+    
+    if (inputEl) {
+        inputEl.value = "";
+        inputEl.disabled = false;
+        inputEl.focus();
+    }
+    if (actionBtn) actionBtn.innerText = "确定 (Enter)";
 
-    // 2. 第二步：更新单词标题和进度（这些是公开信息）
+    // 2. 更新单词和进度
     wordEl.innerText = word.w;
+    const progressEl = document.getElementById('progress');
     if (progressEl) progressEl.innerText = `${state.index + 1} / ${state.wordPool.length}`;
 
-    // 3. 第三步：利用微延迟，在后台更换意思并恢复动画
-    setTimeout(() => {
-        meanEl.innerText = word.m; // 此时意思已经完全透明，更换内容
-        meanEl.style.transition = '0.3s'; // 重新开启 0.3s 的淡入过渡
-    }, 50); // 50毫秒的延迟足以避开浏览器的渲染合并
+    // 3. 绑定回车键逻辑
+    inputEl.onkeydown = (e) => {
+        if (e.key === 'Enter') handleAction();
+    };
 }
 
 function nextWord() {
@@ -170,7 +207,6 @@ function nextWord() {
         state.index++;
         updateCard();
     } else {
-        // 结束后不再使用 alert，直接在卡片里渲染结束界面
         renderEndScreen();
     }
 }
