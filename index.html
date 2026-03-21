@@ -4,16 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VocabMaster Pro</title>
+    <title>词汇注释 - EXAMMM</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="EXAMMM">
+    <link rel="apple-touch-icon" href="img/icon.png">
+    <link rel="icon" type="image/x-icon" href="img/icon.png">
 </head>
 
 <body>
-
     <header>
         <div class="header-content">
             <div class="logo">EXAMMM</div>
             <div class="controls">
+                <button class="icon-btn" onclick="toggleMode()" id="mode-btn" title="切换模式">问答</button>
                 <button class="icon-btn" onclick="toggleLang()" id="lang-btn">EN</button>
                 <div class="switch" id="theme-switch" onclick="toggleTheme()"></div>
             </div>
@@ -60,7 +66,6 @@
     </div>
 
     <script src="main.js"></script>
-
 </body>
 
 </html>
