@@ -20,11 +20,43 @@
             <div class="logo">EXAMMM</div>
             <div class="controls">
                 <button class="icon-btn" onclick="toggleMode()" id="mode-btn" title="切换模式">问答</button>
-                <button class="icon-btn" onclick="toggleLang()" id="lang-btn">EN</button>
+                <button class="icon-btn" onclick="showAbout()" id="about-btn">关于更新</button>
                 <div class="switch" id="theme-switch" onclick="toggleTheme()"></div>
             </div>
         </div>
     </header>
+
+    <div id="about-overlay" class="modal-overlay" onclick="closeAbout(event)">
+        <div class="card modal-card">
+            <h3 class="modal-title">关于 EXAMMM</h3>
+            <div class="modal-body">
+                <p><strong>版本：</strong>v0.1.2</p>
+                <p><strong>功能：</strong>简约高效的注释背诵工具，在空闲时练习华文注释成为卷王。</p>
+                <p><strong>操作：</strong></p>
+                <ul style="text-align: left; padding-left: 20px; font-size: 0.85rem; color: var(--text-sub);">
+                    <li><b>问答模式：</b>需手动输入含义，正确答案请参考给予的答案，由个人定夺。</li>
+                    <li><b>字卡模式：</b>直接点击卡片查看答案。</li>
+                    <li><b>随机：</b>开启后打乱所有章节单词。</li>
+                    <li><b>切换：</b>可使用按钮切换题目或直接点选题目卡片切换下一题，电脑则可使用ENTER键。</li>
+                    <li><b>安装：</b>手机可通过点击网页右上方的三点后点击"添加到主屏幕"进行安装。</li>
+                </ul>
+                <hr>
+                <p><strong>欢迎将自制的注释词汇提交给开发者！<br> 需满足以下条件：</strong></p>
+                <ul style="text-align: left; padding-left: 20px; font-size: 0.85rem; color: var(--text-sub);">
+                    
+                    <ul>
+                        <li>词汇需与华文注释相关</li>
+                        <li>将原本句子写入并且使用双引号著名注释的词(参考当前拥有的题目)</li>
+                        <li>若答案为多选，使用 / 分割</li>
+                    </ul>
+                    <strong style="color: #AD1C42;">本网站提供的注释词汇仅供参考，若出现疑问请自行定夺，网站的注释文字输入有误请联系开发者。</strong>
+                    <li><b>Discord:</b><strong>lanmai1024</strong></li>
+                </ul>
+                
+            </div>
+            <button class="btn-main" onclick="closeAbout()" style="margin-top: 20px; width: 100%;">确认</button>
+        </div>
+    </div>
 
     <div class="container" id="selection-screen">
         <input type="text" class="search-input" id="search-bar" placeholder="搜索章节..." oninput="renderChapters()">

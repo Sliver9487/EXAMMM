@@ -4,7 +4,6 @@ let state = {
     wordPool: [],
     index: 0,
     isRandom: false,
-    lang: 'zh',
     theme: 'light',
     quizMode: 'en-to-zh' // 'en-to-zh' (问答) 或 'zh-to-en' (字卡)
 };
@@ -26,7 +25,6 @@ async function init() {
 function saveSettings() {
     const config = {
         isRandom: state.isRandom,
-        lang: state.lang,
         theme: document.documentElement.getAttribute('data-theme'),
         quizMode: state.quizMode // 新增记录
     };
@@ -39,7 +37,6 @@ function loadSettings() {
     if (saved) {
         const config = JSON.parse(saved);
         state.isRandom = config.isRandom;
-        state.lang = config.lang || 'zh';
         state.quizMode = config.quizMode || 'en-to-zh'; // 读取记录
 
         // 同步 UI 状态
@@ -52,10 +49,6 @@ function loadSettings() {
             document.getElementById('random-switch').classList.add('active');
             document.getElementById('random-text').style.color = "var(--primary)";
         }
-
-        // 应用语言设置
-        state.lang = config.lang;
-        document.getElementById('lang-btn').innerText = state.lang === 'zh' ? 'EN' : '中';
 
         // 应用主题设置
         state.theme = config.theme;
@@ -97,11 +90,14 @@ function toggleTheme() {
     saveSettings();
 }
 
-function toggleLang() {
-    state.lang = state.lang === 'zh' ? 'en' : 'zh';
-    document.getElementById('lang-btn').innerText = state.lang === 'zh' ? 'EN' : '中';
-    saveSettings();
-    renderChapters();
+function showAbout() {
+    document.getElementById('about-overlay').classList.add('active');
+}
+
+function closeAbout(event) {
+    // 如果传入了 event，判断点击的是否是遮罩层本身
+    if (event && event.target !== event.currentTarget) return;
+    document.getElementById('about-overlay').classList.remove('active');
 }
 
 // --- 单词练习逻辑 ---
