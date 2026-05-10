@@ -2,5 +2,8 @@
   { "id": "lesson3", "title": "高三:第三课《出师表》", "path": "data/S3ZSL3.csv", "count": 37 },
   { "id": "lesson5", "title": "高三:第五课《涉江》", "path": "data/S3ZSL5.csv", "count": 56 },
   { "id": "lesson6", "title": "高三:第六课《前赤壁赋》", "path": "data/S3ZSL6.csv", "count": 49 },
-  { "id": "lesson8", "title": "高三:第八课《琵琶行》并序", "path": "data/S3ZSL8.csv", "count": 33 }
+  { "id": "lesson8", "title": "高三:第八课《琵琶行》并序", "path": "data/S3ZSL8.csv", "count": 33 },
+  { "id": "lesson9", "title": "高三:第九课 《将进酒》", "path": "data/S3ZSL9.csv", "count": 19 },
+  { "id": "lesson10", "title": "高三:第十课《兵车行》", "path": "data/S3ZSL10.csv", "count": 22 },
+  { "id": "lesson11", "title": "高三:第十一课《正气歌》", "path": "data/S3ZSL11.csv", "count": 57 }
 ]

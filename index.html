@@ -1,103 +1,102 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>词汇注释 - EXAMMM</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="EXAMMM">
-    <link rel="apple-touch-icon" href="img/icon.png">
-    <link rel="icon" type="image/x-icon" href="img/icon.png">
+    <title>华文注释 - EXAMMM</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#f6f1e8">
 </head>
-
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/png" href="./img/icon.png">
+</head>
 <body>
-    <header>
+    <header class="app-header">
         <div class="header-content">
-            <div class="logo">EXAMMM</div>
-            <div class="controls">
-                <button class="icon-btn" onclick="toggleMode()" id="mode-btn" title="切换模式">问答</button>
-                <button class="icon-btn" onclick="showAbout()" id="about-btn">关于更新</button>
-                <div class="switch" id="theme-switch" onclick="toggleTheme()"></div>
+            <div>
+                <div class="logo">EXAMMM</div>
+                <p class="tagline">华文注释练习</p>
+            </div>
+            <div class="controls" aria-label="练习设置">
+                <button class="mode-pill" type="button" id="mode-btn" aria-pressed="true">问答模式</button>
+                <button class="switch-control" type="button" id="theme-switch" aria-label="切换深色模式" aria-pressed="false">
+                    <span></span>
+                </button>
             </div>
         </div>
     </header>
 
-    <div id="about-overlay" class="modal-overlay" onclick="closeAbout(event)">
-        <div class="card modal-card">
-            <h3 class="modal-title">关于 EXAMMM</h3>
-            <div class="modal-body">
-                <p><strong>版本：</strong>v0.1.2</p>
-                <p><strong>功能：</strong>简约高效的注释背诵工具，在空闲时练习华文注释成为卷王。</p>
-                <p><strong>操作：</strong></p>
-                <ul style="text-align: left; padding-left: 20px; font-size: 0.85rem; color: var(--text-sub);">
-                    <li><b>问答模式：</b>需手动输入含义，正确答案请参考给予的答案，由个人定夺。</li>
-                    <li><b>字卡模式：</b>直接点击卡片查看答案。</li>
-                    <li><b>随机：</b>开启后打乱所有章节单词。</li>
-                    <li><b>切换：</b>可使用按钮切换题目或直接点选题目卡片切换下一题，电脑则可使用ENTER键。</li>
-                    <li><b>安装：</b>手机可通过点击网页右上方的三点后点击"添加到主屏幕"进行安装。</li>
-                </ul>
-                <hr>
-                <p><strong>欢迎将自制的注释词汇提交给开发者！<br> 需满足以下条件：</strong></p>
-                <ul style="text-align: left; padding-left: 20px; font-size: 0.85rem; color: var(--text-sub);">
-                    
-                    <ul>
-                        <li>词汇需与华文注释相关</li>
-                        <li>将原本句子写入并且使用双引号著名注释的词(参考当前拥有的题目)</li>
-                        <li>若答案为多选，使用 / 分割</li>
-                    </ul>
-                    <strong style="color: #AD1C42;">本网站提供的注释词汇仅供参考，若出现疑问请自行定夺，网站的注释文字输入有误请联系开发者。</strong>
-                    <li><b>Discord:</b><strong>lanmai1024</strong></li>
-                </ul>
-                
-            </div>
-            <button class="btn-main" onclick="closeAbout()" style="margin-top: 20px; width: 100%;">确认</button>
-        </div>
-    </div>
+    <main class="container" id="selection-screen">
+        <section class="search-wrapper" aria-label="章节搜索">
+            <label class="visually-hidden" for="search-bar">搜索章节</label>
+            <input type="search" class="search-input" id="search-bar" placeholder="搜索章节..." autocomplete="off">
+            <p class="selection-hint" id="selection-hint">请先选择章节</p>
+        </section>
 
-    <div class="container" id="selection-screen">
-        <input type="text" class="search-input" id="search-bar" placeholder="搜索章节..." oninput="renderChapters()">
+        <section class="chapter-list" id="chapter-list" aria-live="polite">
+            <div class="empty-state">章节加载中...</div>
+        </section>
 
-        <div class="chapter-list" id="chapter-list">
-            <div style="padding: 20px; text-align: center; color: var(--text-sub);">正在读取词库索引...</div>
-        </div>
+        <section class="footer-toolbar-integrated" id="selection-footer" aria-label="底部工具栏">
+            <button class="expand-handle" type="button" id="footer-toggle" aria-expanded="false">
+                <span class="handle-icon" aria-hidden="true"></span>
+                <span id="footer-toggle-text">展开更多选项</span>
+            </button>
 
-        <div class="footer-toolbar">
-            <div class="random-btn" onclick="toggleRandom()">
-                <span id="random-text"
-                    style="font-size: 0.65rem; font-weight: 800; color: var(--text-sub); margin-bottom: 4px;">随机</span>
-                <div class="switch" id="random-switch"></div>
-            </div>
-            <button class="btn-main" id="start-btn" onclick="loadAndStart()" disabled>开始练习 (0 词)</button>
-        </div>
-    </div>
-
-    <div class="container" id="training-screen" style="display:none;">
-        <div id="progress" style="text-align: center; margin-bottom: 1rem; font-weight: 800; color: var(--text-sub);">0
-            / 0</div>
-
-        <div class="card" onclick="handleAction()">
-            <div class="word" id="display-word">-</div>
-
-            <div id="input-area" style="width: 100%; margin-top: 20px;" onclick="event.stopPropagation()">
-                <input type="text" id="user-input" class="search-input" placeholder="输入含义..." autocomplete="off"
-                    style="text-align: center; margin: 15px auto;">
+            <div id="footer-options" class="footer-options-area">
+                <div class="option-group" aria-label="显示内容">
+                    <span class="option-label">显示内容</span>
+                    <div class="segmented-control">
+                        <label><input type="radio" name="viewType" value="word" checked><span>词语模式</span></label>
+                        <label><input type="radio" name="viewType" value="sentence"><span>原句模式</span></label>
+                    </div>
+                </div>
+                <button class="btn-secondary-integrated" type="button" id="show-all-btn" disabled>预览全部</button>
+                <button class="btn-secondary-integrated success" type="button" id="export-pdf-btn" disabled>导出讲义 PDF</button>
             </div>
 
-            <div class="mean" id="display-mean">-</div>
+            <div class="footer-main-row">
+                <button class="random-btn" type="button" id="random-btn" aria-pressed="false">
+                    <span>随机练习</span>
+                    <span class="switch small" id="random-switch" aria-hidden="true"></span>
+                </button>
+                <button class="btn-main" type="button" id="start-btn" disabled title="请先选择章节">开始练习 (0)</button>
+            </div>
+        </section>
+    </main>
+
+    <main class="container" id="training-screen" hidden>
+        <div class="session-bar">
+            <span class="status-chip" id="mode-status">问答模式 · 词语模式</span>
+            <span class="status-chip" id="progress">0 / 0</span>
         </div>
 
-        <div class="footer-toolbar">
-            <button class="icon-btn" onclick="prevWord()">←</button>
-            <button class="btn-main" onclick="handleAction()" id="action-btn">确定 (Enter)</button>
-            <button class="icon-btn" onclick="exitSession()">✕</button>
-        </div>
-    </div>
+        <section id="card-mode" class="practice-shell">
+            <article class="card" id="training-card" tabindex="0" aria-live="polite">
+                <div class="word" id="display-word">-</div>
+                <div id="input-area">
+                    <label class="visually-hidden" for="user-input">输入含义</label>
+                    <input type="text" id="user-input" placeholder="输入含义后按 Enter" autocomplete="off">
+                </div>
+                <div class="mean" id="display-mean"></div>
+            </article>
+            <div class="footer-toolbar">
+                <button class="icon-btn" type="button" id="prev-btn" aria-label="上一题">上一题</button>
+                <button class="btn-main" type="button" id="action-btn">显示答案</button>
+                <button class="icon-btn" type="button" id="exit-btn" aria-label="返回章节">返回章节</button>
+            </div>
+        </section>
 
-    <script src="main.js"></script>
+        <section id="preview-mode" class="preview-shell" hidden>
+            <div id="preview-list" class="preview-list" aria-live="polite"></div>
+            <div class="footer-toolbar">
+                <button class="btn-main" type="button" id="preview-back-btn">返回章节</button>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="./js/app.js"></script>
 </body>
-
 </html>
