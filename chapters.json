@@ -7,10 +7,12 @@
   { "id": "bcx", "title": "《兵车行》", "path": "data/bing-che-xing-v2026.csv", "count": 22 },
   { "id": "zqg", "title": "《正气歌》", "path": "data/zheng-qi-ge-v2026.csv", "count": 57 },
   { "id": "hmy", "title": "《洪门宴》", "path": "data/hong-men-yan-v2026.csv", "count": 68 },
-  { "id": "jkcqw", "title": "《荆轲刺秦王》", "path": "data/jing-ke-ci-qin-wang-v2026.csv", "count": 53 },
-  { "id": "gql", "title": "《过秦论》", "path": "data/guo-qin-lun-v2026.csv", "count": 59 },
-  { "id": "ss", "title": "《师说》", "path": "data/shi-shuo-v2026.csv", "count": 33 },
-  { "id": "yll", "title": "《雨霖铃》", "path": "data/yu-lin-ling-v2026.csv", "count": 10 },
-  { "id": "ssm", "title": "《声声慢》", "path": "data/sheng-sheng-man-v2026.csv", "count": 6 },
-  { "id": "xjh", "title": "《相见欢》", "path": "data/xiang-jian-huan-v2026.csv", "count": 2 }
+  { "id": "jkcqw", "title": "《荆轲刺秦王》", "path": "data/jing-ke-ci-qin-wang-v2026.csv", "count": 59 },
+  { "id": "gql", "title": "《过秦论》", "path": "data/guo-qin-lun-v2026.csv", "count": 60 },
+  { "id": "ss", "title": "《师说》", "path": "data/shi-shuo-v2026.csv", "count": 43 },
+  { "id": "yll", "title": "《雨霖铃》", "path": "data/yu-lin-ling-v2026.csv", "count": 12 },
+  { "id": "ssm", "title": "《声声慢》", "path": "data/sheng-sheng-man-v2026.csv", "count": 7 },
+  { "id": "xjh", "title": "《相见欢》", "path": "data/xiang-jian-huan-v2026.csv", "count": 2 },
+  { "id": "nnjcbhg", "title": "《念奴娇·赤壁怀古》", "path": "data/nian-nu-jiao-chi-bi-huai-gu-v2026.csv", "count": 13 }
+  
 ]
