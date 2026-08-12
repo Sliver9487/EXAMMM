@@ -2,15 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>华文注释 - EXAMMM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+    <title>华文注释练习 - EXAMMM</title>
+    <meta name="description" content="EXAMMM 是一个简约高效的华文注释练习工具，支持章节选择、随机练习、预览全部词条和导出讲义 PDF。">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="华文注释练习 - EXAMMM">
+    <meta property="og:description" content="选择章节，快速复习华文课文注释，并可导出讲义 PDF。">
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="./style.css">
     <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./img/icon.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#f6f1e8">
-</head>
-    <!-- 网站图标 -->
-    <link rel="icon" type="image/png" href="./img/icon.png">
 </head>
 <body>
     <header class="app-header">
@@ -32,10 +35,10 @@
         <section class="search-wrapper" aria-label="章节搜索">
             <label class="visually-hidden" for="search-bar">搜索章节</label>
             <input type="search" class="search-input" id="search-bar" placeholder="搜索章节..." autocomplete="off">
-            <p class="selection-hint" id="selection-hint">请先选择章节</p>
+            <p class="selection-hint" id="selection-hint" aria-live="polite">请先选择章节</p>
         </section>
 
-        <section class="chapter-list" id="chapter-list" aria-live="polite">
+        <section class="chapter-list" id="chapter-list">
             <div class="empty-state">章节加载中...</div>
         </section>
 
@@ -76,11 +79,11 @@
         <section id="card-mode" class="practice-shell">
             <article class="card" id="training-card" tabindex="0" aria-live="polite">
                 <div class="word" id="display-word">-</div>
+                <div class="mean" id="display-mean"></div>
                 <div id="input-area">
                     <label class="visually-hidden" for="user-input">输入含义</label>
                     <input type="text" id="user-input" placeholder="输入含义后按 Enter" autocomplete="off">
                 </div>
-                <div class="mean" id="display-mean"></div>
             </article>
             <div class="footer-toolbar">
                 <button class="icon-btn" type="button" id="prev-btn" aria-label="上一题">上一题</button>
@@ -90,7 +93,7 @@
         </section>
 
         <section id="preview-mode" class="preview-shell" hidden>
-            <div id="preview-list" class="preview-list" aria-live="polite"></div>
+            <div id="preview-list" class="preview-list"></div>
             <div class="footer-toolbar">
                 <button class="btn-main" type="button" id="preview-back-btn">返回章节</button>
             </div>

@@ -39,7 +39,7 @@ export function renderChapters() {
     els.chapterList.innerHTML = chapters.map((chapter) => {
         const selected = state.selectedIds.has(chapter.id);
         return `
-            <button class="chapter-item ${selected ? 'selected' : ''}" type="button" data-id="${escapeHTML(chapter.id)}" aria-pressed="${selected}">
+            <button class="chapter-item ${selected ? 'selected' : ''}" type="button" data-id="${escapeHTML(chapter.id)}" role="checkbox" aria-checked="${selected}">
                 <span class="chapter-check" aria-hidden="true">${selected ? '✓' : ''}</span>
                 <span class="chapter-info">
                     <strong>${escapeHTML(chapter.title)}</strong>
@@ -73,6 +73,7 @@ export function updateChapterActions() {
     els.startBtn.disabled = !hasSelection || loading;
     els.showAllBtn.disabled = !hasSelection || loading;
     els.exportPdfBtn.disabled = !hasSelection || loading;
+    syncDisabledState(els.startBtn, els.showAllBtn, els.exportPdfBtn);
     els.startBtn.title = hasSelection ? '' : '请先选择章节';
     els.showAllBtn.title = hasSelection ? '' : '请先选择章节';
     els.exportPdfBtn.title = hasSelection ? '' : '请先选择章节';
@@ -82,6 +83,12 @@ export function updateChapterActions() {
         els.showAllBtn.textContent = '预览全部';
         els.exportPdfBtn.textContent = '导出讲义 PDF';
     }
+}
+
+function syncDisabledState(...buttons) {
+    buttons.forEach((button) => {
+        button.setAttribute('aria-disabled', String(button.disabled));
+    });
 }
 
 export function showLoadErrors() {

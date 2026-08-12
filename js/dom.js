@@ -34,6 +34,7 @@ export const els = {
 
 export function setBusy(button, isBusy, busyText, idleText) {
     button.disabled = isBusy;
+    button.setAttribute('aria-disabled', String(button.disabled));
     button.textContent = isBusy ? busyText : idleText;
 }
 

@@ -86,11 +86,12 @@ export function renderCard() {
     els.displayMean.classList.toggle('show', state.answerVisible);
     els.actionBtn.textContent = state.answerVisible ? nextButtonText() : '显示答案';
     els.prevBtn.disabled = state.index === 0;
+    els.prevBtn.setAttribute('aria-disabled', String(els.prevBtn.disabled));
     els.progress.textContent = `${state.index + 1} / ${state.wordPool.length}`;
 
     if (state.quizMode === 'qa') {
         els.userInput.value = '';
-        requestAnimationFrame(() => els.userInput.focus());
+        requestAnimationFrame(() => els.userInput.focus({ preventScroll: true }));
     }
 }
 
@@ -144,6 +145,7 @@ export function renderCompletion() {
     els.progress.textContent = `${state.wordPool.length} / ${state.wordPool.length}`;
     els.actionBtn.textContent = '重新练习';
     els.prevBtn.disabled = state.wordPool.length <= 1;
+    els.prevBtn.setAttribute('aria-disabled', String(els.prevBtn.disabled));
 }
 
 export function restartSession() {
@@ -206,6 +208,9 @@ function setLoading(isLoading, text = '') {
     setBusy(els.startBtn, isLoading, text, `开始练习 (${selectedWordCount()})`);
     els.showAllBtn.disabled = isLoading || !state.selectedIds.size;
     els.exportPdfBtn.disabled = isLoading || !state.selectedIds.size;
+    els.startBtn.setAttribute('aria-disabled', String(els.startBtn.disabled));
+    els.showAllBtn.setAttribute('aria-disabled', String(els.showAllBtn.disabled));
+    els.exportPdfBtn.setAttribute('aria-disabled', String(els.exportPdfBtn.disabled));
     if (isLoading) {
         els.showAllBtn.textContent = '加载中...';
         els.exportPdfBtn.textContent = '加载中...';
